@@ -18,8 +18,8 @@ const logger = winston.createLogger({
   transports: [new winston.transports.Console(), new winston.transports.File({ filename: 'app.log' })]
 });
 
-// API Key check
-const apiKey = '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';
+// Secure API Key
+const apiKey = process.env.OPENROUTER_API_KEY;
 if (!apiKey) {
   logger.error("OPENROUTER_API_KEY not found in environment variables.");
   process.exit(1);
@@ -71,13 +71,13 @@ const translateMap = {
   "التعلم المستمر": "Continuous learning"
 };
 
-// Reverse translation map
+// Reverse translation (not used but ready if needed)
 const translateReverseMap = Object.entries(translateMap).reduce((acc, [ar, en]) => {
   acc[en] = ar;
   return acc;
 }, {});
 
-// Express app init
+// Initialize app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -90,49 +90,24 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Routes
+// Root route
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to UniRise API', status: 'operational' });
 });
 
-// /api/options route
+// Get options
 app.get('/api/options', (req, res) => {
   try {
     const options = {
-      interests: [
-        "التكنولوجيا", "البيولوجيا", "الاقتصاد", "الآداب", "الفنون", "الرياضيات", "الكيمياء",
-        "علم النفس", "التواصل", "التاريخ", "الجغرافيا", "الطب", "الهندسة", "الفيزياء"
-      ],
-      strengths: [
-        "حل المشكلات", "الحفظ والتذكر", "الإبداع والابتكار", "المنطق والتحليل",
-        "البحث العلمي", "مهارات القيادة", "التفكير النقدي", "التنظيم", "التخطيط"
-      ],
-      study: [
-        "بمفردي", "ضمن مجموعة", "بمشاريع تطبيقية", "بالتعلم عن بعد",
-        "بالقراءة", "بالاستماع", "بالممارسة"
-      ],
-      motivation: [
-        "مساعدة الآخرين", "الابتكار والتجديد", "المال والربح", "الهيبة والمكانة",
-        "التأثير المجتمعي", "الاكتشاف", "التعلم المستمر"
-      ],
-      vision: [
-        "في مستشفى", "في مكتب", "في مختبر", "في المحكمة", "في استوديو فني",
-        "في مؤسسة تعليمية", "في الميدان", "في شركة خاصة", "في أماكن متعددة"
-      ],
-      skills: [
-        "مهارات التقنية", "مهارات التواصل", "مهارات التحليل", "مهارات الإدارة",
-        "مهارات البحث", "مهارات الإبداع", "مهارات العرض والتقديم"
-      ],
-      values: [
-        "الاستقرار الوظيفي", "المرونة", "التطور المهني", "التوازن بين العمل والحياة",
-        "الاستقلالية", "العمل الجماعي", "التنوع"
-      ],
-      challenges: [
-        "حل المشكلات المعقدة", "العمل مع الناس", "الابتكار الإبداعي", "التحليل العلمي",
-        "إدارة الوقت", "التعامل مع الضغط", "التعلم المستمر"
-      ]
+      interests: Object.keys(translateMap).filter(x => ["التكنولوجيا", "البيولوجيا", "الاقتصاد", "الآداب", "الفنون", "الرياضيات", "الكيمياء", "علم النفس", "التواصل", "التاريخ", "الجغرافيا", "الطب", "الهندسة", "الفيزياء"].includes(x)),
+      strengths: ["حل المشكلات", "الحفظ والتذكر", "الإبداع والابتكار", "المنطق والتحليل", "البحث العلمي", "مهارات القيادة", "التفكير النقدي", "التنظيم", "التخطيط"],
+      study: ["بمفردي", "ضمن مجموعة", "بمشاريع تطبيقية", "بالتعلم عن بعد", "بالقراءة", "بالاستماع", "بالممارسة"],
+      motivation: ["مساعدة الآخرين", "الابتكار والتجديد", "المال والربح", "الهيبة والمكانة", "التأثير المجتمعي", "الاكتشاف", "التعلم المستمر"],
+      vision: ["في مستشفى", "في مكتب", "في مختبر", "في المحكمة", "في استوديو فني", "في مؤسسة تعليمية", "في الميدان", "في شركة خاصة", "في أماكن متعددة"],
+      skills: ["مهارات التقنية", "مهارات التواصل", "مهارات التحليل", "مهارات الإدارة", "مهارات البحث", "مهارات الإبداع", "مهارات العرض والتقديم"],
+      values: ["الاستقرار الوظيفي", "المرونة", "التطور المهني", "التوازن بين العمل والحياة", "الاستقلالية", "العمل الجماعي", "التنوع"],
+      challenges: ["حل المشكلات المعقدة", "العمل مع الناس", "الابتكار الإبداعي", "التحليل العلمي", "إدارة الوقت", "التعامل مع الضغط", "التعلم المستمر"]
     };
-
     res.json(options);
   } catch (error) {
     logger.error(`Error loading options: ${error.message}`);
@@ -140,24 +115,25 @@ app.get('/api/options', (req, res) => {
   }
 });
 
-// Predict major
+// Predict major route
 app.post('/api/predict-major', async (req, res) => {
   try {
-    const { answers } = req.body;
+    const answers = req.body?.answers;
+    if (!answers || typeof answers !== 'object') {
+      return res.status(400).json({ error: "Missing or invalid 'answers' in request body." });
+    }
+
     const requiredKeys = ['interest', 'strength', 'study', 'motivation', 'vision', 'skills', 'values', 'challenges'];
     const missingKeys = requiredKeys.filter(key => !(key in answers));
-
     if (missingKeys.length) {
-      return res.status(400).json({ error: `Missing keys in input: ${missingKeys.join(', ')}` });
+      return res.status(400).json({ error: `Missing keys: ${missingKeys.join(', ')}` });
     }
 
     const processedAnswers = {};
     for (const [key, value] of Object.entries(answers)) {
-      if (Array.isArray(value)) {
-        processedAnswers[key] = value.map(item => translateMap[item] || item).join(', ');
-      } else {
-        processedAnswers[key] = translateMap[value] || value;
-      }
+      processedAnswers[key] = Array.isArray(value)
+        ? value.map(v => translateMap[v] || v).join(', ')
+        : (translateMap[value] || value);
     }
 
     const prompt = `
@@ -184,8 +160,7 @@ app.post('/api/predict-major', async (req, res) => {
 3. [اسم التخصص]: [الشرح]. المسارات المهنية: [المهن].
 
 تأكد من أن توصياتك واقعية وتتماشى مع النظام الجامعي الجزائري وسوق العمل.
- 
-    `;
+`;
 
     const response = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
       model: 'anthropic/claude-3-haiku',
@@ -202,9 +177,7 @@ app.post('/api/predict-major', async (req, res) => {
     });
 
     const result = response.data?.choices?.[0]?.message?.content?.trim();
-    if (!result) {
-      throw new Error('No valid response received from OpenRouter API');
-    }
+    if (!result) throw new Error('No valid response from OpenRouter API');
 
     res.json({
       result,
@@ -215,14 +188,16 @@ app.post('/api/predict-major', async (req, res) => {
   } catch (error) {
     logger.error(`Prediction error: ${error.message}`);
     if (error.response) {
-      res.status(error.response.status).json({ error: `API Error: ${error.response.data.error?.message || 'Unknown error'}` });
+      res.status(error.response.status).json({
+        error: `API Error: ${error.response.data.error?.message || 'Unknown error'}`
+      });
     } else {
       res.status(500).json({ error: `Internal Server Error: ${error.message}` });
     }
   }
 });
 
-// Start server
+// Start the server
 app.listen(PORT, () => {
   logger.info(`UniRise API server running on port ${PORT}`);
 });
