@@ -79,11 +79,10 @@ const translateReverseMap = Object.entries(translateMap).reduce((acc, [ar, en]) 
 
 // Express app init
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: ['https://unrise-ai.vercel.app/'],
+  origin: ['https://unrise-ai.vercel.app/', 'http://localhost:5173'],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
