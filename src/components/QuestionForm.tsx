@@ -88,9 +88,16 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmitSuccess, setLoading
       setLoading(true);
       setError(null);
       
-   const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/predict-major`, {
-  answers: formData
-});
+  const response = await axios.post(
+  `${import.meta.env.VITE_API_BASE_URL}/api/predict-major`,
+  { answers: formData },
+  {
+    headers: {
+      Authorization: import.meta.env.VITE_API_KEY || '', // or hardcode if needed
+    },
+  }
+);
+
 
 
       
