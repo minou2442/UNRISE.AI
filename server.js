@@ -19,7 +19,7 @@ const logger = winston.createLogger({
 });
 
 // Secure API Key
-const apiKey = process.env.OPENROUTER_API_KEY;
+const apiKey = process.env.OPENAI_API_KEY;
 if (!apiKey) {
   logger.error("OPENROUTER_API_KEY not found in environment variables.");
   process.exit(1);
