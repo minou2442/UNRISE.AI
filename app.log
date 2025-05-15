@@ -1,0 +1,20 @@
+2025-05-15T07:36:49.546Z info: UniRise API server running on port 5000
+2025-05-15T07:39:11.012Z info: UniRise API server running on port 5000
+2025-05-15T07:40:51.998Z info: Received prediction request
+2025-05-15T07:40:51.998Z info: Processed answers: {"interest":"Biology, Economics, Literature, Communication","strength":"Problem-solving, Memorization","study":"Alone, In a group","motivation":"Innovation, Money","vision":"In a lab","skills":"Communication skills, Analytical skills","values":"Professional growth","challenges":"Solving complex problems, Working with people"}
+2025-05-15T07:40:52.746Z error: Prediction error: Request failed with status code 401
+2025-05-15T07:40:52.746Z error: API Error: {"error":{"message":"No auth credentials found","code":401}}
+2025-05-15T07:42:37.333Z info: UniRise API server running on port 5000
+2025-05-15T07:45:23.916Z info: UniRise API server running on port 5000
+2025-05-15T07:47:09.489Z info: Received prediction request
+2025-05-15T07:47:09.491Z info: Processed answers: {"interest":"Biology","strength":"Memorization","study":"With hands-on projects","motivation":"Money","vision":"In an art studio","skills":"Communication skills","values":"Job stability, Professional growth, Work-life balance","challenges":"Solving complex problems"}
+2025-05-15T07:47:12.877Z info: Received prediction request
+2025-05-15T07:47:12.877Z info: Processed answers: {"interest":"Biology","strength":"Memorization","study":"With hands-on projects","motivation":"Money","vision":"In an art studio","skills":"Communication skills","values":"Job stability, Professional growth, Work-life balance","challenges":"Solving complex problems"}
+2025-05-15T07:47:13.268Z info: Prediction generated successfully
+2025-05-15T07:47:17.670Z info: Prediction generated successfully
+2025-05-15T07:57:37.275Z info: UniRise API server running on port 5000
+2025-05-15T08:00:00.766Z info: UniRise API server running on port 5000
+2025-05-15T08:06:13.708Z info: UniRise API server running on port 5000
+2025-05-15T08:10:36.973Z info: UniRise API server running on port 5000
+2025-05-15T08:11:28.946Z error: Prediction error: 
+2025-05-15T08:46:49.897Z info: UniRise API server running on port 5000

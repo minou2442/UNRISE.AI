@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
+
+:root {
+  --color-primary: #FFD700;
+  --color-primary-dark: #E6C300;
+  --color-primary-light: #FFF0A8;
+  --color-dark: #111111;
+  --color-light: #F5F5F5;
+  --color-grey-light: #D3D3D3;
+  --color-grey: #808080;
+  --color-grey-dark: #505050;
+}
+
+.dark {
+  --color-primary: #FFD700;
+  --color-primary-dark: #E6C300;
+  --color-primary-light: #3D3A20;
+  --color-dark: #F5F5F5;
+  --color-light: #111111;
+  --color-grey-light: #505050;
+  --color-grey: #808080;
+  --color-grey-dark: #D3D3D3;
+}
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  direction: rtl;
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-primary {
+  @apply bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg transition-all duration-300;
+}
+
+.btn-secondary {
+  @apply bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300;
+}
+
+.card {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-all duration-300;
+}
+
+.form-input {
+  @apply w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all duration-300;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+}
+
+.checkbox-container {
+  @apply flex items-center space-x-2 space-x-reverse;
+}
+
+.checkbox-input {
+  @apply h-5 w-5 text-yellow-400 rounded border-gray-300 focus:ring-yellow-400 dark:border-gray-600 transition-all duration-300;
+}
+
+.dropdown {
+  @apply relative inline-block text-left;
+}
+
+.dropdown-menu {
+  @apply absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none;
+}
