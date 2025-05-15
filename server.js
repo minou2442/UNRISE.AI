@@ -171,7 +171,7 @@ app.post('/api/predict-major', async (req, res) => {
     }, {
       headers: {
         'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://unirise.dz',
+        'HTTP-Referer': 'https://unrise-ai.onrender.com/',
         'X-Title': 'UniRise Major Predictor'
       }
     });
