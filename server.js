@@ -19,7 +19,7 @@ const logger = winston.createLogger({
 });
 
 // API Key check
-const apiKey = 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;
+const apiKey = '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';
 if (!apiKey) {
   logger.error("OPENROUTER_API_KEY not found in environment variables.");
   process.exit(1);
