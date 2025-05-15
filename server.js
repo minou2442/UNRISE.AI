@@ -83,7 +83,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:4173'],
+  origin: ['https://unrise-ai.vercel.app/'],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
