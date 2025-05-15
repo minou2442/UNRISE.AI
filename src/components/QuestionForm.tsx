@@ -53,7 +53,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmitSuccess, setLoading
     const fetchOptions = async () => {
       try {
         setLoadingOptions(true);
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/options`);
+        const response = await axios.get(`https://unrise-ai.onrender.com/api/options`);
         setOptions(response.data);
       } catch (err) {
         setError('فشل في تحميل الخيارات. يرجى تحديث الصفحة.');
@@ -88,7 +88,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmitSuccess, setLoading
       setLoading(true);
       setError(null);
       
-     const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/predict-major`, {
+     const response = await axios.post(`https://unrise-ai.onrender.com/api/predict-major`, {
   answers: formData
 });
 
