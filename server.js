@@ -19,7 +19,7 @@ const logger = winston.createLogger({
 });
 
 // Secure API Key
-const apiKey = process.env.OPENAI_API_KEY;
+const apiKey = process.env.AIMLAPI_KEY;
 if (!apiKey) {
   logger.error("OPENROUTER_API_KEY not found in environment variables.");
   process.exit(1);
@@ -162,19 +162,17 @@ app.post('/api/predict-major', async (req, res) => {
 تأكد من أن توصياتك واقعية وتتماشى مع النظام الجامعي الجزائري وسوق العمل.
 `;
 
-    const response = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
-      model: 'anthropic/claude-3-haiku',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7,
-      max_tokens: 800,
-      top_p: 0.95
-    }, {
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://unrise-ai.onrender.com/',
-        'X-Title': 'UniRise Major Predictor'
-      }
-    });
+    const response = await axios.post('https://api.aimlapi.com/v1/chat/completions', {
+  model: 'claude-3-haiku', // or other model AIMLAPI supports
+  messages: [{ role: 'user', content: prompt }],
+  temperature: 0.7,
+  max_tokens: 800
+}, {
+  headers: {
+    'Authorization': `Bearer ${process.env.AIMLAPI_KEY}`,
+    'Content-Type': 'application/json'
+  }
+});
 
     const result = response.data?.choices?.[0]?.message?.content?.trim();
     if (!result) throw new Error('No valid response from OpenRouter API');
