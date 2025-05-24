@@ -19,7 +19,7 @@ const logger = winston.createLogger({
 });
 
 // Secure API Key
-const apiKey = process.env.AIMLAPI_KEY;
+const apiKey = process.env.OPENROUTER_API_KEY;
 if (!apiKey) {
   logger.error("OPENROUTER_API_KEY not found in environment variables.");
   process.exit(1);
@@ -83,7 +83,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: ['https://unrise-ai.vercel.app'],
+  origin: ['http://localhost:5173'],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -162,26 +162,32 @@ app.post('/api/predict-major', async (req, res) => {
 تأكد من أن توصياتك واقعية وتتماشى مع النظام الجامعي الجزائري وسوق العمل.
 `;
 
-    const response = await axios.post('https://api.aimlapi.com/v1/chat/completions', {
-  model: 'claude-3-haiku', // or other model AIMLAPI supports
+   // Inside POST /api/predict-major route:
+
+const response = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
+  model: 'anthropic/claude-3-haiku',
   messages: [{ role: 'user', content: prompt }],
   temperature: 0.7,
   max_tokens: 800
 }, {
   headers: {
-    'Authorization': `Bearer ${process.env.AIMLAPI_KEY}`,
-    'Content-Type': 'application/json'
+    'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+    'Content-Type': 'application/json',
+    'HTTP-Referer': 'https://unrise-ai.vercel.app', // or your deployed front-end domain
+    'X-Title': 'UniRise'
   }
 });
 
-    const result = response.data?.choices?.[0]?.message?.content?.trim();
-    if (!result) throw new Error('No valid response from OpenRouter API');
 
-    res.json({
-      result,
-      model: response.data.model,
-      processingTime: response.data.usage ? `${Math.round((response.data.usage.total_tokens / 6) * 100) / 100}s` : 'N/A'
-    });
+const result = response.data?.choices?.[0]?.message?.content?.trim();
+if (!result) throw new Error('No valid response from AIMLAPI');
+
+res.json({
+  result,
+  model: response.data.model,
+  processingTime: response.data.usage ? `${Math.round((response.data.usage.total_tokens / 6) * 100) / 100}s` : 'N/A'
+});
+
 
   } catch (error) {
     logger.error(`Prediction error: ${error.message}`);
